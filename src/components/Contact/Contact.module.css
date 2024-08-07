@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.5px solid black;
+    border-radius: 5px;
+    background-color: rgb(151, 202, 234);
+}
+
+.btn {
+    font-family: inherit;
+    height: 25px;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-right: 10px;
+    background-color: rgb(151, 202, 234);
+    &:hover {
+        scale: 1.2;
+        background-color: rgb(246, 179, 71);
+    }
+}
+
+.icon {
+    margin: 0 10px;
+}
