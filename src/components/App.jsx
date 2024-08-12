@@ -3,7 +3,10 @@ import SearchBox from './SearchBox/SearchBox';
 import ContactList from './ContactList/ContactList';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectNameFilter, changeFilter } from "../redux/filtersSlice";
-import { addContact, deleteContact, selectContacts } from "../redux/contactsSlice";
+import { selectLoading, selectError } from "../redux/contactsSlice";
+import { selectContacts } from "../redux/contactsSlice";
+import { fetchContacts, deleteContact, addContact } from "../redux/contactsOps";
+import { useEffect } from 'react';
 
 const App = () => {
     const contacts = useSelector(selectContacts);
@@ -12,17 +15,12 @@ const App = () => {
     const visibleContacts = contacts.filter((contact) =>
         contact.name.toLowerCase().includes(filter.toLowerCase())
     );
-    // const initialContacts = [
-    //     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    //     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    //     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    //     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    // ];
-    // useEffect(() => {
-    //     if (contacts.length === 0) {
-    //         dispatch(setInitialContacts(initialContacts));
-    //     }
-    // }, [contacts, dispatch]);
+    const isLoading = useSelector(selectLoading);
+    const isError = useSelector(selectError);
+    useEffect(() => {
+    dispatch(fetchContacts());
+    }, [dispatch]);
+    
     const handleAddContact = (newContact) => {
         dispatch(addContact(newContact));
     };
@@ -39,6 +37,8 @@ const App = () => {
             <ContactForm onAdd={handleAddContact} />
             <SearchBox value={filter} onFilter={handleSearch} />
             <ContactList contacts={visibleContacts} onDelete={handleDeleteContact} />
+            {isLoading && <h1>Loading...</h1>}
+            {isError && <h2>Something went wrong!</h2>}
         </div>
     );
 };
